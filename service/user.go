@@ -12,8 +12,8 @@ import (
 	"fmt"
 	"sync"
 
-	"api_gateway/internal/util"
-	"api_gateway/model"
+	"gogin/internal/util"
+	"gogin/model"
 )
 
 //TODO: 其实如果没有 耗时操作，比如 GenShortId, 可以不用并发，直接倒腾数据结构即可

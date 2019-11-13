@@ -12,9 +12,9 @@ import (
 
 	"strconv"
 
-	"api_gateway/internal/errno"
-	"api_gateway/model"
-	. "api_gateway/handler"
+	"gogin/internal/errno"
+	"gogin/model"
+	. "gogin/handler"
 
 	"github.com/gin-gonic/gin"
 )

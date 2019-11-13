@@ -12,7 +12,7 @@ package handler
 import (
 	"net/http"
 
-	"api_gateway/internal/errno"
+	"gogin/internal/errno"
 
 	"github.com/gin-gonic/gin"
 )

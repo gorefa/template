@@ -13,7 +13,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"api_gateway/internal/errno"
+	"gogin/internal/errno"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"

@@ -8,7 +8,7 @@
 
 package user
 
-import "api_gateway/model"
+import "gogin/model"
 //模块: /v1/user
 
 //对应  POST /v1/user

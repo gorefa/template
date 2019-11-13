@@ -12,10 +12,10 @@ import (
 	"strconv"
 
 
-	. "api_gateway/handler"
-	"api_gateway/internal/errno"
-	"api_gateway/internal/util"
-	"api_gateway/model"
+	. "gogin/handler"
+	"gogin/internal/errno"
+	"gogin/internal/util"
+	"gogin/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"

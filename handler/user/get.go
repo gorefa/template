@@ -10,9 +10,9 @@ package user
 
 import (
 
-	. "api_gateway/handler"
-	"api_gateway/internal/errno"
-	"api_gateway/model"
+	. "gogin/handler"
+	"gogin/internal/errno"
+	"gogin/model"
 
 	"github.com/gin-gonic/gin"
 

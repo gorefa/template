@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"api_gateway/config"
-	"api_gateway/model"
-	"api_gateway/router"
-	"api_gateway/router/middleware"
+	"gogin/config"
+	"gogin/model"
+	"gogin/router"
+	"gogin/router/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"

@@ -15,8 +15,8 @@ import (
 	"regexp"
 	"time"
 
-	"api_gateway/handler"
-	"api_gateway/internal/errno"
+	"gogin/handler"
+	"gogin/internal/errno"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"
