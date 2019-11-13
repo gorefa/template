@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"yk_cgi/internal/auth"
-	"yk_cgi/internal/constvar"
+	"api_gateway/internal/auth"
+	"api_gateway/internal/constvar"
 
 	"gopkg.in/go-playground/validator.v9"
 )

@@ -10,11 +10,11 @@ package user
 
 import (
 
-	"yk_cgi/internal/auth"
-	"yk_cgi/internal/errno"
-	"yk_cgi/internal/token"
-	"yk_cgi/model"
-	. "yk_cgi/handler"
+	"api_gateway/internal/auth"
+	"api_gateway/internal/errno"
+	"api_gateway/internal/token"
+	"api_gateway/model"
+	. "api_gateway/handler"
 
 	"github.com/gin-gonic/gin"
 )

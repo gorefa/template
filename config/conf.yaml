@@ -1,0 +1,15 @@
+runmode: debug
+
+log:
+  # 输出位置，有2个可选项：file,stdout  可以两者同时选择
+  writers: file,stdout
+  #DEBUG, INFO, WARN, ERROR, FATAL
+  logger_level: DEBUG
+  logger_file: logs/api.log
+  #日志的输出格式,false会输出成json格式，true会输出成plaintext
+  log_format_text: true
+  #size, daily
+  rollingPolicy: size
+  log_rotate_date: 1
+  log_rotate_size: 1
+  log_backup_count: 7

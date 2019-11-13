@@ -6,7 +6,7 @@
 # Author:      ch-yk
 # Email:       commonheart.yk@gmail.com
 # Website:     www.commonheart-yk.com
-# Description: 管理 yk_cgi 的启动和终止
+# Description: 管理 api_gateway 的启动和终止
 # Notes:       This plugin uses the "./run.sh -h", "./run.sh start", "./run.sh stop", "./run.sh status" command
 # -------------------------------------------------------------------------------
 # Copyright:   2018 (c) ch-yk
@@ -17,7 +17,7 @@
 ## 2. -h, start, status, stop, restart
 
 
-SERVER="yk_cgi"
+SERVER="api_gateway"
 BASE_DIR=$PWD
 INTERVAL=2
 

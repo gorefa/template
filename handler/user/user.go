@@ -8,7 +8,7 @@
 
 package user
 
-import "yk_cgi/model"
+import "api_gateway/model"
 //模块: /v1/user
 
 //对应  POST /v1/user

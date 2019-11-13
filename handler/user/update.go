@@ -12,10 +12,10 @@ import (
 	"strconv"
 
 
-	. "yk_cgi/handler"
-	"yk_cgi/internal/errno"
-	"yk_cgi/internal/util"
-	"yk_cgi/model"
+	. "api_gateway/handler"
+	"api_gateway/internal/errno"
+	"api_gateway/internal/util"
+	"api_gateway/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lexkong/log"

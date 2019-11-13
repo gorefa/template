@@ -13,11 +13,11 @@ package router
 
 import (
 	"net/http"
-	"yk_cgi/handler/user"
+	"api_gateway/handler/user"
 
 	"github.com/gin-gonic/gin"
-	"yk_cgi/handler/xserver_status"
-	"yk_cgi/router/middleware"
+	"api_gateway/handler/xserver_status"
+	"api_gateway/router/middleware"
 )
 
 func Load(engine *gin.Engine, middles ...gin.HandlerFunc) *gin.Engine {

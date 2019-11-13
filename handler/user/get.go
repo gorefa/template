@@ -10,9 +10,9 @@ package user
 
 import (
 
-	. "yk_cgi/handler"
-	"yk_cgi/internal/errno"
-	"yk_cgi/model"
+	. "api_gateway/handler"
+	"api_gateway/internal/errno"
+	"api_gateway/model"
 
 	"github.com/gin-gonic/gin"
 

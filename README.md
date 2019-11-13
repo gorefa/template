@@ -292,11 +292,11 @@ URL "http://golang.org/x/net/html?go-get=1":
 
 跑起来，测试，提交git。(先将就一下)
 
-![13-54-13-yk_cgi_v0.3_1.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/08/13-54-13-yk_cgi_v0.3_1.jpg)
+![13-54-13-api_gateway_v0.3_1.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/08/13-54-13-api_gateway_v0.3_1.jpg)
 
-![13-54-27-yk_cgi_v0.3_2.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/08/13-54-27-yk_cgi_v0.3_2.jpg)
+![13-54-27-api_gateway_v0.3_2.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/08/13-54-27-api_gateway_v0.3_2.jpg)
 
-![13-54-52-yk_cgi_v0.3_3.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/08/13-54-52-yk_cgi_v0.3_3.jpg)
+![13-54-52-api_gateway_v0.3_3.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/08/13-54-52-api_gateway_v0.3_3.jpg)
 
 
 
@@ -463,19 +463,19 @@ mongodb1:
 
 不传入参数:
 
-![15-41-27-yk_cgi_v0.7_1.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-41-27-yk_cgi_v0.7_1.jpg)
+![15-41-27-api_gateway_v0.7_1.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-41-27-api_gateway_v0.7_1.jpg)
 
 只传入单个参数:
 
-![15-43-52-yk_cgi_v0.7_2.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-43-52-yk_cgi_v0.7_2.jpg)
+![15-43-52-api_gateway_v0.7_2.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-43-52-api_gateway_v0.7_2.jpg)
 
 
 
 只传递后一个参数:
 
-![15-48-55-yk_cgi_v0.7_3.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-48-55-yk_cgi_v0.7_3.jpg)
+![15-48-55-api_gateway_v0.7_3.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-48-55-api_gateway_v0.7_3.jpg)
 
-![15-50-45-yk_cgi_v0.7_4.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-50-45-yk_cgi_v0.7_4.jpg)
+![15-50-45-api_gateway_v0.7_4.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/15-50-45-api_gateway_v0.7_4.jpg)
 
 
 
@@ -582,7 +582,7 @@ BTW: Version 1.0 引入 `api.commonheart-yk.com/debug/pprof` 采样分析，但�
 
 > 除此之外，后面再无后端系统 （以后其他 web 系统都由此应用网关供能，其他系统只写前端，纯前端实现）
 
-![08-32-44-yk_cgi_halt.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/08-32-44-yk_cgi_halt.jpg)
+![08-32-44-api_gateway_halt.jpg](https://hub.commonheart-yk.com/wiki/pics/2018/09/08-32-44-api_gateway_halt.jpg)
 
 
 * 重新整理 API 版本问题 (**版本还是放在模块前面**)

@@ -10,9 +10,9 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"yk_cgi/handler"
-	"yk_cgi/internal/errno"
-	"yk_cgi/internal/token"
+	"api_gateway/handler"
+	"api_gateway/internal/errno"
+	"api_gateway/internal/token"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
