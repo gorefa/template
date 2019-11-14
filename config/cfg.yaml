@@ -1,0 +1,18 @@
+runmode: debug                 # 开发模式, debug, release, test
+addr: :8080                  # HTTP绑定端口
+url: http://127.0.0.1:8080   # pingServer函数请求的API服务器的ip:port
+max_ping_count: 10
+
+log:
+  # 输出位置，有2个可选项：file,stdout  可以两者同时选择
+  writers: stdout
+  #DEBUG, INFO, WARN, ERROR, FATAL
+  logger_level: DEBUG
+  logger_file: logs/gingo.log
+  #日志的输出格式,false会输出成json格式，true会输出成plaintext
+  log_format_text: true
+  #size, daily
+  rollingPolicy: size
+  log_rotate_date: 1
+  log_rotate_size: 1
+  log_backup_count: 7
