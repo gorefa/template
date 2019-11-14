@@ -2,3 +2,4 @@
 .idea/
 .idea_modules/
 logs/
+config/cfg.yaml
