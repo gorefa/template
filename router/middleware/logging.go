@@ -30,7 +30,7 @@ func Logging() gin.HandlerFunc {
 		start := time.Now().UTC()
 		path := c.Request.URL.Path
 
-		if path == "/api/v1/health" || path == "/api/v1/cpu" {
+		if path == "/api/v1/health" || path == "/api/v1/disk" || path == "/api/v1/cpu" || path == "/api/v1/ram" {
 			return
 		}
 

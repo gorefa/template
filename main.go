@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"gogin/config"
+	"gogin/model"
 	v "gogin/pkg/version"
 	"gogin/router"
 	"gogin/router/middleware"
@@ -42,6 +43,10 @@ func main() {
 	if err := config.Init(*cfg); err != nil {
 		panic(err)
 	}
+
+	// mysql init
+	model.DB.Init()
+	defer model.DB.Close()
 
 	//gin have release, debug, test mode
 	gin.SetMode(viper.GetString("runmode"))

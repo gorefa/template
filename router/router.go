@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"gogin/handler"
+	"gogin/handler/user"
 	"gogin/router/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -23,6 +24,14 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	v1 := g.Group("/api/v1/")
 	{
 		v1.GET("/health", handler.HealthCheck)
+		v1.GET("/disk", handler.DiskCheck)
+		v1.GET("/cpu", handler.CPUCheck)
+		v1.GET("/ram", handler.RAMCheck)
+	}
+
+	u := g.Group("/api/v1/user")
+	{
+		u.POST("/:username", user.Create)
 	}
 
 	return g

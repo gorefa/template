@@ -16,3 +16,9 @@ log:
   log_rotate_date: 1
   log_rotate_size: 1
   log_backup_count: 7
+
+db:
+  name: gogin
+  addr: 192.168.1.1:3306
+  username: root
+  password: root
