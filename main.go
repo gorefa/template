@@ -45,7 +45,7 @@ func main() {
 	}
 
 	// mysql init
-	model.DB.Init()
+	model.Init()
 	defer model.DB.Close()
 
 	//gin have release, debug, test mode

@@ -9,19 +9,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-type Database struct {
-	Local *gorm.DB
+var DB *gorm.DB
+
+func Init() {
+	DB = InitDB()
 }
 
-var DB *Database
-
-func (db *Database) Init() {
-	DB = &Database{
-		Local: openDB(),
-	}
-}
-
-func openDB() *gorm.DB {
+func InitDB() *gorm.DB {
 	config := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=%t&loc=%s",
 		viper.GetString("db.username"),
 		viper.GetString("db.password"),
@@ -39,8 +33,4 @@ func openDB() *gorm.DB {
 	db.DB().SetMaxIdleConns(0)
 
 	return db
-}
-
-func (db *Database) Close() {
-	DB.Local.Close()
 }

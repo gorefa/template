@@ -1,12 +1,11 @@
 package user
 
 import (
-	"fmt"
+	"gogin/model"
+	"strings"
 
 	. "gogin/handler"
 	"gogin/pkg/errno"
-
-	"github.com/lexkong/log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,28 +21,35 @@ type CreateResponse struct {
 
 func Create(c *gin.Context) {
 	var req CreateRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
+	if err := c.Bind(&req); err != nil {
 		SendResponse(c, errno.ErrBind, nil)
 		return
 	}
-	fmt.Println("req", req)
-	username := c.Param("username")
-	log.Infof("URL username: %s", username)
 
-	desc := c.Query("desc")
-	log.Infof("URL key param desc: %s", desc)
+	u := model.User{
+		Username: req.Username,
+		Password: req.Password,
+	}
 
-	contentType := c.GetHeader("Content-Type")
-	log.Infof("Header Content-Type: %s", contentType)
-
-	log.Debugf("username is: [%s], password is [%s]", req.Username, req.Password)
-	if req.Username == "" {
-		SendResponse(c, errno.New(errno.ErrUserNotFound, fmt.Errorf("username can not found in db: xx.xx.xx.xx")), nil)
+	// Validate the data.
+	if err := u.Validate(); err != nil {
+		SendResponse(c, errno.ErrValidation, nil)
 		return
 	}
 
-	if req.Password == "" {
-		SendResponse(c, fmt.Errorf("password is empty"), nil)
+	// Encrypt the user password.
+	if err := u.Encrypt(); err != nil {
+		SendResponse(c, errno.ErrEncrypt, nil)
+		return
+	}
+	// Insert the user to the database.
+	if err := u.Create(); err != nil {
+		if strings.Contains(err.Error(), "Duplicate") {
+			SendResponse(c, &errno.Errno{Code: 400, Message: "user exist!"}, nil)
+			return
+		}
+		SendResponse(c, errno.ErrDatabase, nil)
+		return
 	}
 
 	rsp := CreateResponse{
