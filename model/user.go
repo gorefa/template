@@ -31,3 +31,14 @@ func (user *User) Encrypt() (err error) {
 func (user *User) Create() error {
 	return DB.Create(&user).Error
 }
+
+func List() []string {
+	users := []User{}
+	DB.Find(&users)
+	var userlist []string
+	for _, v := range users {
+		userlist = append(userlist, v.Username)
+	}
+	//strings.Replace(strings.Trim(fmt.Sprint(userlist), "[]"), " ", ",", -1)
+	return userlist
+}

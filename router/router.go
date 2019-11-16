@@ -32,6 +32,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	u := g.Group("/api/v1/user")
 	{
 		u.POST("", user.Create)
+		u.GET("", user.List)
 	}
 
 	return g
