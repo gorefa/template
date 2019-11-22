@@ -21,6 +21,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 
+	g.POST("/login", user.Login)
+
 	v1 := g.Group("/api/v1/")
 	{
 		v1.GET("/health", handler.HealthCheck)
@@ -30,6 +32,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	}
 
 	u := g.Group("/api/v1/user")
+	u.Use(middleware.AuthMiddleware())
 	{
 		u.POST("", user.Create)
 		u.GET("", user.List)

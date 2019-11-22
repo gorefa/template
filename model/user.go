@@ -42,3 +42,9 @@ func List() []string {
 	//strings.Replace(strings.Trim(fmt.Sprint(userlist), "[]"), " ", ",", -1)
 	return userlist
 }
+
+func GetUser(username string) (*User, error) {
+	u := &User{}
+	d := DB.Where("username = ?", username).First(&u)
+	return u, d.Error
+}
