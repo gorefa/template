@@ -1,7 +1,6 @@
 package k8s
 
 import (
-	"fmt"
 	. "gogin/handler"
 
 	"github.com/gin-gonic/gin"
@@ -13,19 +12,15 @@ type PodListResponse struct {
 }
 
 func PodList(c *gin.Context) {
-
 	ns := c.Param("ns")
-
 	pods, err := Clientset.CoreV1().Pods(ns).List(metav1.ListOptions{})
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
-
-	var nspods []string
+	podstatus := make(map[string]string)
 	for _, pod := range pods.Items {
-		nspods = append(nspods, pod.Name)
+		podstatus[pod.Name] = string(pod.Status.Reason) // ?
 	}
 
-	SendResponse(c, nil, nspods)
+	SendResponse(c, nil, podstatus)
 }
