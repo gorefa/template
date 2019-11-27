@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"gogin/handler"
+	"gogin/handler/k8s"
 	"gogin/handler/user"
 	"gogin/router/middleware"
 
@@ -36,6 +37,11 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	{
 		u.POST("", user.Create)
 		u.GET("", user.List)
+	}
+	k := g.Group("/api/v1/k8s")
+	k.Use(middleware.AuthMiddleware())
+	{
+		k.GET("/:ns", k8s.PodList)
 	}
 
 	return g
