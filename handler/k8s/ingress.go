@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func PodList(c *gin.Context) {
+func IngressList(c *gin.Context) {
 
-	list := model.PodList(c.Param("ns"))
+	list := model.IngressList(c.Param("ns"))
 	SendResponse(c, nil, list)
 }

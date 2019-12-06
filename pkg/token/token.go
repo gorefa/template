@@ -15,7 +15,6 @@ var (
 	ErrMissingHeader = errors.New("The length of the `Authorization` header is zero.")
 )
 
-
 // Context is the context of the JSON web token.
 type Context struct {
 	ID       uint64
@@ -33,7 +32,6 @@ func secretFunc(secret string) jwt.Keyfunc {
 		return []byte(secret), nil
 	}
 }
-
 
 // Parse validates the token with the specified secret,
 // and returns the context if the token was valid.
@@ -59,7 +57,6 @@ func Parse(tokenString string, secret string) (*Context, error) {
 	}
 }
 
-
 // ParseRequest gets the token from the header and
 // pass it to the Parse function to parses the token.
 func ParseRequest(c *gin.Context) (*Context, error) {
@@ -72,12 +69,12 @@ func ParseRequest(c *gin.Context) (*Context, error) {
 		return &Context{}, ErrMissingHeader
 	}
 
-
 	var t string
 	// Parse the header to get the token part.
 	_, _ = fmt.Sscanf(header, "Bearer %s", &t)
 	return Parse(t, secret)
 }
+
 var jwtSecret = []byte(viper.GetString("jwt_secret"))
 
 type Claims struct {
@@ -89,20 +86,20 @@ type Claims struct {
 func GenerateToken(username, password string) (string, error) {
 
 	nowTime := time.Now()
-	expireTime := nowTime.Add(3 * time.Hour)
+	expireTime := nowTime.Add(24 * time.Hour)
 
 	claims := Claims{
 		username,
 		password,
-		jwt.StandardClaims {
-			ExpiresAt : expireTime.Unix(),
-			Issuer : "gogin",
+		jwt.StandardClaims{
+			ExpiresAt: expireTime.Unix(),
+			Issuer:    "gogin",
 		},
 	}
 
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(jwtSecret)
-	fmt.Println("err",err)
+	fmt.Println("err", err)
 
 	return token, err
 }

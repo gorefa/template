@@ -41,7 +41,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	k := g.Group("/api/v1/k8s")
 	k.Use(middleware.AuthMiddleware())
 	{
-		k.GET("/:ns", k8s.PodList)
+		k.GET("/:ns/pod", k8s.PodList)
+		k.GET("/:ns/ingress", k8s.IngressList)
 	}
 
 	return g
