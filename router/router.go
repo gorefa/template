@@ -44,6 +44,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		k.GET("/:ns/pod", k8s.PodList)
 		k.GET("/:ns/ingress", k8s.IngressList)
 		k.POST("/:ns", k8s.DeploymentCreate)
+		k.GET("", k8s.NodeList)
 	}
 
 	return g

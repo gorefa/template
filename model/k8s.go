@@ -40,7 +40,6 @@ func IngressList(ns string) []string {
 	ingress, err := Clientset.ExtensionsV1beta1().Ingresses(ns).List(metav1.ListOptions{})
 	if err != nil {
 		log.Fatalf(err, "list %s ingress err", ns)
-		panic(err.Error())
 	}
 	var ingresses []string
 	for _, ing := range ingress.Items {
@@ -98,3 +97,16 @@ func DeploymentCreate(ns string) (string, error) {
 }
 
 func int32Ptr(i int32) *int32 { return &i }
+
+func NodeList() []string {
+	nodelist, err := Clientset.CoreV1().Nodes().List(metav1.ListOptions{})
+	if err != nil {
+		log.Fatalf(err, "list node err")
+	}
+
+	var nodes []string
+	for _, node := range nodelist.Items {
+		nodes = append(nodes, node.GetName())
+	}
+	return nodes
+}
