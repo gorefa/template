@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/lexkong/log"
+	"github.com/gorefa/log"
 
 	"gogin/handler"
 	"gogin/pkg/errno"

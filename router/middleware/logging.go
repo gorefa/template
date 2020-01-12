@@ -10,7 +10,7 @@ import (
 	"gogin/pkg/errno"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lexkong/log"
+	"github.com/gorefa/log"
 	"github.com/willf/pad"
 )
 

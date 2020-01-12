@@ -4,7 +4,7 @@ import (
 	. "gogin/handler"
 	"gogin/model"
 
-	"github.com/lexkong/log"
+	"github.com/gorefa/log"
 
 	"github.com/gin-gonic/gin"
 )
