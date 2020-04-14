@@ -72,7 +72,7 @@ func GetSecondarynode() []string {
 
 	allns := nsinfo.Data
 	var onens []string
-	for i := 0; i < 40; i++ {
+	for i := 0; i < len(allns); i++ {
 		ns := allns[i]
 		test := strings.Split(ns, ".")
 		onens = append(onens, test[len(test)-2]+"."+test[len(test)-1])
