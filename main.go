@@ -1,74 +1,100 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"golang.org/x/oauth2"
+	"strings"
 )
 
-const htmlIndex = `<html><body>
-<a href="/googlelogin">login with google</a>
-</body></body>
-`
-
-var endpoint = oauth2.Endpoint{
-	AuthURL:  "https://accounts.google.com/o/oauth2/auth",
-	TokenURL: "https://accounts.google.com/o/oauth2/token",
+type NsInfo struct {
+	Data       []string `json:"data"`
+	Httpstatus int64    `json:"httpstatus"`
+	Msg        string   `json:"msg"`
 }
-
-var googleOauthConfig = &oauth2.Config{
-	ClientID:     "22843386397-1qg7gietjkgi1flcl8vclm58rji7htil.apps.googleusercontent.com",
-	ClientSecret: "f9d7sv0qlFG-MHMmAmeBSVyZ",
-	RedirectURL:  "http://localhost:8081/googlecallback",
-	Scopes:       []string{"https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"},
-	Endpoint:     endpoint,
+type Machinelist struct {
+	Data []struct {
+		ID         string `json:"_id"`
+		AgentType  string `json:"agentType"`
+		Branch     string `json:"branch"`
+		BuildTime  string `json:"buildTime"`
+		Commit     string `json:"commit"`
+		GoVersion  string `json:"goVersion"`
+		Hostname   string `json:"hostname"`
+		IP         string `json:"ip"`
+		Key        string `json:"key"`
+		LastReport string `json:"lastReport"`
+		Ns         string `json:"ns"`
+		Sleep      string `json:"sleep"`
+		Sn         string `json:"sn"`
+		Status     string `json:"status"`
+		Version    string `json:"version"`
+	} `json:"data"`
+	Httpstatus int64  `json:"httpstatus"`
+	Msg        string `json:"msg"`
 }
-
-const oauthStateString = "random"
 
 func main() {
-	http.HandleFunc("/", handleMain)
-	http.HandleFunc("/googlelogin", handleGoogleLogin)
-	http.HandleFunc("/googlecallback", handleGoogleCallback)
-	fmt.Println(http.ListenAndServe(":8081", nil))
+	Secondarynode := GetSecondarynode()
+	for i := 0; i < len(Secondarynode); i++ {
+		nsmachine := Machinelist{}
+		url := fmt.Sprintf("https://registry.monitor.ifengidc.com/api/v1/event/resource?ns=%s&type=machine", Secondarynode[i])
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Println(err)
+		}
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println(err)
+		}
+		json.Unmarshal(body, &nsmachine)
+		fmt.Println(Secondarynode[i], len(nsmachine.Data))
 
-}
-
-func handleMain(w http.ResponseWriter, r *http.Request) {
-	_, _ = fmt.Fprintf(w, htmlIndex)
-}
-
-func handleGoogleLogin(w http.ResponseWriter, r *http.Request) {
-	url := googleOauthConfig.AuthCodeURL(oauthStateString)
-	fmt.Println(url)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
-}
-
-func handleGoogleCallback(w http.ResponseWriter, r *http.Request) {
-	state := r.FormValue("state")
-	fmt.Println("state", state)
-	if state != oauthStateString {
-		fmt.Printf("invalid oauth state, expected '%s', got '%s'\n", oauthStateString, state)
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
 	}
-	fmt.Println(state)
-
-	code := r.FormValue("code")
-	fmt.Println(code)
-	token, err := googleOauthConfig.Exchange(oauth2.NoContext, code)
-	fmt.Println(token)
+}
+func GetSecondarynode() []string {
+	nsinfo := NsInfo{}
+	resp, err := http.Get("http://registry.monitor.ifengidc.com/api/v1/router/ns?format=list")
 	if err != nil {
-		fmt.Println("Code exchange failed with '%s'\n", err)
-		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		return
+		fmt.Println(err)
 	}
 
-	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
+	defer resp.Body.Close()
 
-	defer response.Body.Close()
-	contents, err := ioutil.ReadAll(response.Body)
-	fmt.Fprintf(w, "Content: %s\n", contents)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	json.Unmarshal(body, &nsinfo)
+
+	allns := nsinfo.Data
+	var onens []string
+	for i := 0; i < 40; i++ {
+		ns := allns[i]
+		test := strings.Split(ns, ".")
+		onens = append(onens, test[len(test)-2]+"."+test[len(test)-1])
+	}
+
+	return RemoveRepeatedElement(onens)
+
+}
+
+func RemoveRepeatedElement(arr []string) (newArr []string) {
+	newArr = make([]string, 0)
+	for i := 0; i < len(arr); i++ {
+		repeat := false
+		for j := i + 1; j < len(arr); j++ {
+			if arr[i] == arr[j] {
+				repeat = true
+				break
+			}
+		}
+		if !repeat {
+			newArr = append(newArr, arr[i])
+		}
+	}
+	return
 }
