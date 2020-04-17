@@ -6,8 +6,9 @@ import (
 	"gogin/handler"
 	"gogin/router/middleware"
 
-	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
@@ -21,12 +22,17 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 
-	v1 := g.Group("/api/v1/")
+	g.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
+	v1 := g.Group("/api/v1/").Use(middleware.MwPrometheusHttp)
 	{
 		v1.GET("/health", handler.HealthCheck)
+		v1.GET("/disk", handler.DiskCheck)
+		v1.GET("/cpu", handler.CPUCheck)
+		v1.GET("/ram", handler.RAMCheck)
+		v1.PUT("/test", handler.Test)
+		v1.POST("/time", handler.Time)
 	}
-
-	g.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	return g
 }

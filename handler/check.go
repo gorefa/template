@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"gogin/stat"
-
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
@@ -22,16 +20,18 @@ const (
 )
 
 func HealthCheck(c *gin.Context) {
-	start := time.Now()
-	method := c.Request.Method
-	stat.GaugeVecApiMethod.WithLabelValues(method).Inc()
-
-	time.Sleep(1 * time.Second)
-	end := time.Now()
-	d := end.Sub(start)
-	stat.GaugeVecApiDuration.WithLabelValues(method).Set(float64(d))
 	message := "OK"
-	//SendResponse(c, nil, message)
+	c.String(http.StatusOK, message)
+}
+
+func Test(c *gin.Context) {
+	message := "PUT test"
+	c.String(http.StatusOK, message)
+}
+
+func Time(c *gin.Context) {
+	message := "POST time"
+	time.Sleep(1 * time.Second)
 	c.String(http.StatusOK, message)
 }
 
