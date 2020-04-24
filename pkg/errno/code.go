@@ -16,4 +16,8 @@ var (
 	ErrTokenInvalid      = &Errno{Code: 20103, Message: "The token was invalid."}
 	ErrPasswordIncorrect = &Errno{Code: 20104, Message: "The password was incorrect."}
 	ErrHeaderNull        = &Errno{Code: 20105, Message: "The header was not found."}
+
+	// k8s
+	ErrClusterIsExists  = &Errno{Code: 30001, Message: "Cluster Is Exists."}
+	ErrClusterNotSpecified  = &Errno{Code: 30002, Message: "Please specify the cluster."}
 )
