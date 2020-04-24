@@ -24,3 +24,9 @@ db:
   addr: 192.168.1.1:3306
   username: root
   password: root
+
+mongodb:
+  host: 192.168.1.1:27017
+  username: root
+  password: root
+  database: "test"

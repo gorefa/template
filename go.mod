@@ -23,7 +23,8 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.5.0
 	github.com/willf/pad v0.0.0-20190207183901-eccfe5d84172
-	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
+	go.mongodb.org/mongo-driver v1.3.2
+	golang.org/x/crypto v0.0.0-20190530122614-20be4c3c3ed5
 	gopkg.in/go-playground/validator.v9 v9.30.0
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	k8s.io/api v0.0.0-20181027024800-9fcf73cc980b

@@ -1,27 +1,41 @@
 package model
 
 import (
+	"context"
+	"encoding/base64"
 	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/gorefa/log"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
 
 var (
+	err error
 	DB        *gorm.DB
+	Mongo        *mongo.Database
 	Clientset *kubernetes.Clientset
+
 )
 
 func Init() {
 	DB = InitDB()
-	Clientset = InitK8S()
+	Mongo, err = InitMongo()
+	if err != nil {
+		panic(err)
+	}
+
+	//Clientset = InitK8S()
 }
 
 func InitDB() *gorm.DB {
@@ -42,6 +56,27 @@ func InitDB() *gorm.DB {
 	db.DB().SetMaxIdleConns(0)
 
 	return db
+}
+
+func InitMongo() (*mongo.Database, error) {
+	host := viper.GetStringSlice("mongodb.host")
+	username := viper.GetString("mongodb.username")
+	password := viper.GetString("mongodb.password")
+	database := viper.GetString("mongodb.database")
+	hosts := strings.Join(host, ",")
+	uri := fmt.Sprintf(`mongodb://%s:%s@%s`,
+		username,
+		password,
+		hosts,
+	)
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	if err != nil {
+		return nil, err
+	}
+	db := client.Database(database)
+
+	return db, nil
+
 }
 
 func InitK8S() *kubernetes.Clientset {
@@ -72,4 +107,40 @@ func homeDir() string {
 		return h
 	}
 	return os.Getenv("USERPROFILE") // windows
+}
+
+
+func NewInitK8S(clustername string) (*kubernetes.Clientset ,error){
+	filter := bson.D{{"name", clustername}}
+	cluster := Cluster{}
+
+	if err := Mongo.Collection(CollectionCluster).FindOne(context.TODO(), filter).Decode(&cluster); err != nil {
+		log.Errorf(err, "get cluster config from DB failed.")
+		return nil,err
+	}
+	config, err := base64.StdEncoding.DecodeString(cluster.KubeConfig)
+	if err != nil {
+		log.Errorf(err, "base64 decode failed.cluster: %s ", clustername)
+		return nil, err
+	}
+
+	cliConfig, err := clientcmd.NewClientConfigFromBytes(config)
+	if err != nil {
+		log.Errorf(err, "kube config error.")
+		return nil, err
+	}
+
+	conf, err := cliConfig.ClientConfig()
+	if err != nil {
+		log.Errorf(err, " kube clinet config error.")
+		return nil, err
+	}
+
+	Clientset, err = kubernetes.NewForConfig(conf)
+	if err != nil {
+		log.Errorf(err, "Create k8s clientset failed. ")
+		return nil, err
+	}
+
+	return Clientset,nil
 }

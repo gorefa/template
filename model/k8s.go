@@ -9,7 +9,9 @@ import (
 
 type PodStat struct {
 	Name   string
-	Status string
+	Status bool
+	RestartCount int32
+	Message string
 }
 
 type Ingress struct {
@@ -17,8 +19,8 @@ type Ingress struct {
 	Name string
 }
 
-func PodList(ns string) []PodStat {
-
+func PodList(cluster,ns string) []PodStat {
+	Clientset , err = NewInitK8S(cluster)
 	pods, err := Clientset.CoreV1().Pods(ns).List(metav1.ListOptions{})
 	if err != nil {
 		panic(err.Error())
@@ -26,17 +28,36 @@ func PodList(ns string) []PodStat {
 
 	podstatus := []PodStat{}
 
-	for _, pod := range pods.Items {
+	for i:= 0; i< len(pods.Items);i++ {
 		var item PodStat
-		item.Name = pod.Name
-		item.Status = string(pod.Status.Phase)
-		podstatus = append(podstatus, item)
+		item.Name = pods.Items[i].Name
+		//item.Status = string(pods.Items[i].Status.Phase)
+		//if len(pods.Items[i].Status.ContainerStatuses) > 1 {
+		//
+		//	continue
+		//}
 
+		item.RestartCount = pods.Items[i].Status.ContainerStatuses[0].RestartCount
+		item.Status = pods.Items[i].Status.ContainerStatuses[0].Ready
+		if ! item.Status {
+			item.Message = pods.Items[i].Status.ContainerStatuses[0].State.Waiting.Reason
+		}
+
+
+		podstatus = append(podstatus, item)
 	}
+	//for i, pod := range pods.Items {
+	//	var item PodStat
+	//	item.Name = pod.Name
+	//	item.Status = string(pod.Status.Phase)
+	//	item.RestartCount = pod.Status.ContainerStatuses[i].RestartCount
+	//	podstatus = append(podstatus, item)
+	//}
 	return podstatus
 }
 
-func IngressList(ns string) []string {
+func IngressList(cluster,ns string) []string {
+	Clientset , err = NewInitK8S(cluster)
 	ingress, err := Clientset.ExtensionsV1beta1().Ingresses(ns).List(metav1.ListOptions{})
 	if err != nil {
 		log.Fatalf(err, "list %s ingress err", ns)
@@ -49,7 +70,8 @@ func IngressList(ns string) []string {
 	return ingresses
 }
 
-func DeploymentCreate(ns string) (string, error) {
+func DeploymentCreate(cluster,ns string) (string, error) {
+	Clientset , err = NewInitK8S(cluster)
 	deploymentsClient := Clientset.AppsV1().Deployments(ns)
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
@@ -98,7 +120,8 @@ func DeploymentCreate(ns string) (string, error) {
 
 func int32Ptr(i int32) *int32 { return &i }
 
-func NodeList() []string {
+func NodeList(cluster string) []string {
+	Clientset , err = NewInitK8S(cluster)
 	nodelist, err := Clientset.CoreV1().Nodes().List(metav1.ListOptions{})
 	if err != nil {
 		log.Fatalf(err, "list node err")

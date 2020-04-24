@@ -23,6 +23,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	})
 
 	g.POST("/login", user.Login)
+	g.POST("/cluster",k8s.ClusterCreate)
 
 	v1 := g.Group("/api/v1/")
 	{

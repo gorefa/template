@@ -11,7 +11,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorefa/log"
-	"github.com/willf/pad"
 )
 
 type bodyLogWriter struct {
@@ -62,18 +61,23 @@ func Logging() gin.HandlerFunc {
 		latency := end.Sub(start)
 
 		code, message := -1, ""
+		ContentType := blw.Header().Get("Content-Type")
+		if ContentType == "application/json; charset=utf-8" {
+			// get code and message
+			var response handler.Response
+			if err := json.Unmarshal(blw.body.Bytes(), &response); err != nil {
+				code = errno.InternalServerError.Code
+				message = err.Error()
+			} else {
+				code = response.Code
+				message = response.Message
+			}
 
-		// get code and message
-		var response handler.Response
-		if err := json.Unmarshal(blw.body.Bytes(), &response); err != nil {
-			log.Errorf(err, "response body can not unmarshal to model.Response struct, body: `%s`", blw.body.Bytes())
-			code = errno.InternalServerError.Code
-			message = err.Error()
+			log.Infof("%-13s | %-12s  | %s %s | {code: %d, message: %s}", latency, ip, method, path, code, message)
 		} else {
-			code = response.Code
-			message = response.Message
+			log.Infof("%-13s | %-12s | %s %s | ContentType:%s ", latency, ip, method, path, ContentType)
+
 		}
 
-		log.Infof("%-13s | %-12s | %s %s | {code: %d, message: %s}", latency, ip, pad.Right(method, 5, ""), path, code, message)
 	}
 }
