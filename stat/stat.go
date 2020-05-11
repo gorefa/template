@@ -23,11 +23,12 @@ var (
 		Name:	"http_request_summary_seconds",
 		Help:	"Summary of lantencies for HTTP requests",
 	})
-	HistogramHttpRequest = prometheus.NewHistogram(prometheus.HistogramOpts{
+
+	HistogramHttpRequest = prometheus.NewHistogramVec(prometheus.HistogramOpts{
 		Name:		"http_request_duration_seconds",
 		Help:		"Histogram of lantencies for HTTP requests",
-	})
-)
+	}, []string{"path","code"})
+	)
 
 func init() {
 	prometheus.MustRegister(GaugeVecApiMethod, GaugeVecApiDuration, GaugeVecApiError,HistogramHttpRequest,SummaryHttpRequest)
