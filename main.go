@@ -54,6 +54,7 @@ func main() {
 		g,
 
 		// Middlwares.
+
 		middleware.Logging(),
 	)
 
