@@ -16,6 +16,9 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.Use(middleware.NoCache)
 	g.Use(middleware.Options)
 	g.Use(middleware.Secure)
+	//g.Use(middleware.OpenTracing())
+	g.Use(middleware.TraceSpan())
+	g.Use(middleware.RequestIDHandler())
 	g.Use(mw...)
 
 	g.POST("/register", handler.Register) // TODO

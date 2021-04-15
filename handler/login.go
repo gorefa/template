@@ -46,6 +46,7 @@ func Login(c *gin.Context) {
 	user := User{}
 	if err := c.ShouldBindJSON(&user); err != nil {
 		SendResponse(c, errno.ErrUserNotFound, nil)
+		return
 	}
 
 	claims := &JWTClaims{
