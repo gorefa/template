@@ -8,9 +8,9 @@ import (
 
 	"gogin/handler"
 	"gogin/pkg/errno"
+	"gogin/pkg/logger"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gorefa/log"
 )
 
 type bodyLogWriter struct {
@@ -73,9 +73,9 @@ func Logging() gin.HandlerFunc {
 				message = response.Message
 			}
 
-			log.Infof("%-13s | %-12s  | %s %s | {code: %d, message: %s}", latency, ip, method, path, code, message)
+			logger.L().Infof("%-13s | %-12s  | %s %s | {code: %d, message: %s}", latency, ip, method, path, code, message)
 		} else {
-			log.Infof("%-13s | %-12s | %s %s | ContentType:%s ", latency, ip, method, path, ContentType)
+			logger.L().Infof("%-13s | %-12s | %s %s | ContentType:%s ", latency, ip, method, path, ContentType)
 
 		}
 

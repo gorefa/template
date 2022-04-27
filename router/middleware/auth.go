@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/gorefa/log"
+	"gogin/pkg/logger"
 
 	"gogin/handler"
 	"gogin/pkg/errno"
@@ -14,7 +14,7 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		header := c.Request.Header.Get("Authorization")
 		if _, err := token.ParseToken(header); err != nil {
-			log.Error("Parsetoken is error", err)
+			logger.L().Error("Parsetoken is error", logger.Error(err))
 			handler.SendResponse(c, errno.ErrTokenInvalid, nil)
 			c.Abort()
 			return

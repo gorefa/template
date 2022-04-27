@@ -3,31 +3,47 @@ package config
 import (
 	"strings"
 
+	"gogin/pkg/logger"
+
 	"github.com/fsnotify/fsnotify"
-	"github.com/gorefa/log"
 	"github.com/spf13/viper"
 )
 
 type Config struct {
-	Name string
+	Name   string
+	Logger *logger.Logger
 }
 
 func Init(cfg string) error {
 	c := Config{
 		Name: cfg,
 	}
-	if err := c.initConfig(); err != nil {
+
+	// init config file
+	configFile, err := c.initConfig()
+	if err != nil {
 		return err
 	}
 
-	c.initLog()
+	// init log
+	if err := c.initLog(); err != nil {
+		return err
+	}
+	c.Logger = logger.GetLogger("config")
+	c.Logger.Debug("config file used", logger.String("file", configFile))
 
 	c.watchConfig()
 
 	return nil
 }
 
-func (c *Config) initConfig() error {
+func (c *Config) initLog() error {
+	viper.SetDefault("log.level", "debug")
+	logConf := logger.Config{Level: viper.GetString("log.level")}
+	return logger.InitLogger(logConf)
+}
+
+func (c *Config) initConfig() (string, error) {
 	if c.Name != "" {
 		viper.SetConfigName(c.Name)
 	} else {
@@ -42,28 +58,14 @@ func (c *Config) initConfig() error {
 	viper.SetEnvKeyReplacer(replacer)
 
 	if err := viper.ReadInConfig(); err != nil {
-		return err
+		return "", err
 	}
-	return nil
-}
-
-func (c *Config) initLog() {
-	passLagerCfg := log.PassLagerCfg{
-		Writers:        viper.GetString("log.writers"),
-		LoggerLevel:    viper.GetString("log.logger_level"),
-		LoggerFile:     viper.GetString("log.logger_file"),
-		LogFormatText:  viper.GetBool("log.log_format_text"),
-		RollingPolicy:  viper.GetString("log.rollingPolicy"),
-		LogRotateDate:  viper.GetInt("log.log_rotate_date"),
-		LogRotateSize:  viper.GetInt("log.log_rotate_size"),
-		LogBackupCount: viper.GetInt("log.log_backup_count"),
-	}
-	_ = log.InitWithConfig(&passLagerCfg)
+	return viper.GetViper().ConfigFileUsed(), nil
 }
 
 func (c *Config) watchConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		log.Infof("config file change: %s", e.Name)
+		c.Logger.Info("config file changed", logger.String("file", e.Name))
 	})
 }

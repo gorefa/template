@@ -18,6 +18,9 @@ var (
 	ErrHeaderNull        = &Errno{Code: 20105, Message: "The header was not found."}
 
 	// k8s
-	ErrClusterIsExists  = &Errno{Code: 30001, Message: "Cluster Is Exists."}
-	ErrClusterNotSpecified  = &Errno{Code: 30002, Message: "Please specify the cluster."}
+	ErrClusterIsExists     = &Errno{Code: 30001, Message: "Cluster Is Exists."}
+	ErrClusterNotSpecified = &Errno{Code: 30002, Message: "Please specify the cluster."}
+
+	// alert
+	ErrAlert = &Errno{Code: 40001, Message: "Alert message error."}
 )
