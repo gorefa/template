@@ -13,7 +13,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.8.1
 	go.uber.org/zap v1.17.0
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/crypto v0.0.0-20220314234659-1baeb1ce4c0b
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 
 )
